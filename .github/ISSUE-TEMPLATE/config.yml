@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 📱 Add a Device (Web Form)
+    url: https://rootdb.xyz/submit/device
+    about: Fastest way to add a device — no GitHub knowledge needed.
+  - name: ✏️ Create a Guide
+    url: https://rootdb.xyz/editor
+    about: Use the visual editor to build an interactive root guide.
+  - name: 💬 Discussions
+    url: https://github.com/rootdb-xyz/rootdb/discussions
+    about: Questions, ideas, or general chat.

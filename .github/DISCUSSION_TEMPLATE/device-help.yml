@@ -1,0 +1,38 @@
+title: "Device Help"
+labels: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Need help rooting a specific device?
+
+        Search [rootdb.xyz](https://rootdb.xyz) first — your device might already be in the database.
+
+  - type: input
+    id: device
+    attributes:
+      label: Device
+      placeholder: "Samsung Galaxy S24 Ultra"
+    validations:
+      required: true
+
+  - type: input
+    id: model
+    attributes:
+      label: Exact Model Number
+      placeholder: "SM-S928B (Settings → About Phone → Model Number)"
+    validations:
+      required: true
+
+  - type: input
+    id: android
+    attributes:
+      label: Android Version
+      placeholder: "Android 14"
+
+  - type: textarea
+    id: question
+    attributes:
+      label: What do you need help with?
+    validations:
+      required: true

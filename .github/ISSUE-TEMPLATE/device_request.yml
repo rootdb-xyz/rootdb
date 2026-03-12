@@ -1,0 +1,42 @@
+name: 📱 Device Request
+description: Request a device be added to the database.
+labels: ["device-request"]
+body:
+  - type: input
+    id: device_name
+    attributes:
+      label: Device Name
+      placeholder: "Samsung Galaxy S24 Ultra"
+    validations:
+      required: true
+
+  - type: input
+    id: model_number
+    attributes:
+      label: Model Number(s)
+      placeholder: "SM-S928B, SM-S928U, SM-S928U1"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: bootloader
+    attributes:
+      label: Bootloader Status
+      options:
+        - Unlockable
+        - Locked (carrier)
+        - Unknown
+    validations:
+      required: true
+
+  - type: input
+    id: soc
+    attributes:
+      label: SoC / Chipset
+      placeholder: "Exynos 2400 / Snapdragon 8 Gen 3"
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: Extra Info
+      placeholder: "Region, carrier, root method used, links to XDA threads, etc."

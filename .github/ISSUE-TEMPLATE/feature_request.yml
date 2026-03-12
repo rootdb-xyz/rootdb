@@ -1,0 +1,31 @@
+name: 💡 Feature Request
+description: Suggest an improvement for RootDB.
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: What do you want?
+      placeholder: Describe the feature.
+    validations:
+      required: true
+
+  - type: textarea
+    id: why
+    attributes:
+      label: Why?
+      placeholder: How would this help users?
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Search / Browse
+        - Device Pages
+        - Guides
+        - Downloads / Uploads
+        - Editor
+        - Voting / Trust
+        - Mobile UX
+        - Other

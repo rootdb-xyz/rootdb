@@ -1,0 +1,15 @@
+title: "Ideas & Suggestions"
+labels: []
+body:
+  - type: textarea
+    id: idea
+    attributes:
+      label: What's your idea?
+      placeholder: "RootDB should have a feature that..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Why would this be useful?
