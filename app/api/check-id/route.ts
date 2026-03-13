@@ -18,7 +18,7 @@ export async function GET(req: NextRequest) {
       });
     }
     case "question": {
-      const qs = getQuestions();
+      const qs = await getQuestions();
       const q = qs[id];
       return NextResponse.json({
         exists: !!q,
@@ -26,7 +26,7 @@ export async function GET(req: NextRequest) {
       });
     }
     case "answer": {
-      const ans = getAnswers();
+      const ans = await getAnswers();
       const a = ans[id];
       return NextResponse.json({
         exists: !!a,
@@ -34,7 +34,7 @@ export async function GET(req: NextRequest) {
       });
     }
     case "tag": {
-      const tags = getTags();
+      const tags = await getTags();
       const t = tags[id];
       return NextResponse.json({
         exists: !!t,
@@ -42,7 +42,7 @@ export async function GET(req: NextRequest) {
       });
     }
     case "device": {
-      const devices = getAllDevices();
+      const devices = await getAllDevices();
       const d = devices.find((dev) => dev.codename === id);
       return NextResponse.json({
         exists: !!d,
