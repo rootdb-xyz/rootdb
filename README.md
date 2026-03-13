@@ -50,3 +50,5 @@ lib/            Data engine, utils, store, auth
 Code: [AGPL-3.0](./LICENSE) · Data: [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)
 
 <sub>Not affiliated with Google, Samsung, or Magisk. Root at your own risk.</sub>
+
+<sub>RootDB has been made almost entirely by AI</sub>
