@@ -5,13 +5,14 @@ import { calculateRootScore, getScoreTier } from "@/lib/utils";
 import { SearchBar } from "@/components/search-bar";
 import { ScoreBadge } from "@/components/score-badge";
 
-export default function HomePage() {
-  const stats = getStats();
-  const devices = getAllDevices();
-  const tags = getTags();
-  const brands = getBrands();
+export default async function HomePage() {
+  // 2. Add 'await' to all these calls
+  const stats = await getStats();
+  const devices = await getAllDevices();
+  const tags = await getTags();
+  const brands = await getBrands();
 
-  // Build "highest rated" list
+  // The rest of your logic (.map, .filter, etc.) will now work
   const scored = devices
     .map((d) => {
       const scores = d.variants?.map((v) => calculateRootScore(v, tags)) ?? [0];
