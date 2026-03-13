@@ -1,13 +1,12 @@
 import { defineConfig, globalIgnores } from "eslint/config";
 import nextVitals from "eslint-config-next/core-web-vitals.js";
-import nextTs from "eslint-config-next/typescript.js";
+import nextTs from "eslint-config-next/typescript.js"; // Added .js extension
 
 const eslintConfig = defineConfig([
-  ...nextVitals,
-  ...nextTs,
+  nextVitals, // Removed "..."
+  nextTs,     // Removed "..."
   // Override default ignores of eslint-config-next.
   globalIgnores([
-    // Default ignores of eslint-config-next:
     ".next/**",
     "out/**",
     "build/**",

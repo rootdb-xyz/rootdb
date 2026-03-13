@@ -21,7 +21,8 @@ interface Props {
 }
 
 export async function generateStaticParams() {
-  return getAllDevices().map((d) => ({
+  const devices = await getAllDevices(); // Fetch the data first
+  return devices.map((d) => ({
     brand: d.brand_id,
     series: d.series_id,
     codename: d.codename,
@@ -30,9 +31,9 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { brand, series, codename } = await params;
-  const device = getDevice(brand, series, codename);
+  const device = await getDevice(brand, series, codename); 
   if (!device) return { title: "Device Not Found" };
-  const brands = getBrands();
+  const brands = await getBrands();
   const brandName = brands[brand]?.name ?? brand;
   return {
     title: `${brandName} ${device.name} — Root Status`,
@@ -57,12 +58,12 @@ export interface EnrichedVariant {
 
 export default async function DevicePage({ params }: Props) {
   const { brand, series, codename } = await params;
-  const device = getDevice(brand, series, codename);
+  const device = await getDevice(brand, series, codename); // Add await
   if (!device) notFound();
 
-  const tags = getTags();
-  const regions = getRegions();
-  const brands = getBrands();
+  const tags = await getTags(); // Add await
+  const regions = await getRegions(); // Add await
+  const brands = await getBrands(); // Add await
   const brandName = brands[brand]?.name ?? brand;
 
   // Resolve guide titles
@@ -72,7 +73,7 @@ export default async function DevicePage({ params }: Props) {
   }
   const guideTitles: Record<string, string> = {};
   for (const gid of allGuideIds) {
-    const g = getGuide(gid);
+    const g = await getGuide(gid); // Add await inside this loop
     if (g) guideTitles[gid] = g.title;
   }
 
