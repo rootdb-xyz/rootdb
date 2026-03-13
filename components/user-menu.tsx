@@ -1,5 +1,6 @@
 "use client";
 
+import Link from 'next/link'
 import { useState, useRef, useEffect } from "react";
 import { Github, LogOut, ChevronDown, User, Trophy, Settings } from "lucide-react";
 
@@ -60,13 +61,7 @@ AUTH_GITHUB_SECRET=your_secret`}
 
   if (!user) {
     return (
-      <a
-        href="/api/auth/signin"
-        className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-      >
-        <Github className="h-4 w-4" />
-        <span className="hidden sm:inline">Sign In</span>
-      </a>
+      <Link href="/api/auth/signin">Sign In</Link>
     );
   }
 
@@ -97,13 +92,7 @@ AUTH_GITHUB_SECRET=your_secret`}
             <Trophy className="h-4 w-4" />
             My Contributions
           </a>
-          <a
-            href="/api/auth/signout"
-            className="flex items-center gap-2 px-4 py-2.5 text-sm text-muted-foreground hover:bg-accent hover:text-foreground"
-          >
-            <LogOut className="h-4 w-4" />
-            Sign Out
-          </a>
+          <Link href="/api/auth/signout">Sign Out</Link>
         </div>
       )}
     </div>

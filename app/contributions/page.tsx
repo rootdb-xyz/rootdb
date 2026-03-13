@@ -26,13 +26,7 @@ export default async function ContributionsPage() {
           Your trust score, badges, and contribution history are tied to your GitHub account.
         </p>
         {authConfigured ? (
-          <a
-            href="/api/auth/signin"
-            className="mt-6 inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3 font-semibold text-primary-foreground hover:bg-primary/90 transition-colors"
-          >
-            <Github className="h-4 w-4" />
-            Sign in with GitHub
-          </a>
+          <Link href="/api/auth/signin">Sign In With Github</Link>
         ) : (
           <div className="mt-6 rounded-lg border border-ctp-yellow/20 bg-ctp-yellow/5 p-4 text-sm text-left">
             <p className="font-medium text-ctp-yellow mb-2">Auth not configured yet</p>

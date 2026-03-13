@@ -1,6 +1,6 @@
-import { redirect } from "next/navigation";
 import { getAdminSession, isAdminConfigured } from "@/lib/admin";
 import { Shield } from "lucide-react";
+import Link from 'next/link'
 
 export default async function AdminLayout({
   children,
@@ -29,12 +29,7 @@ export default async function AdminLayout({
         <p className="mt-2 text-muted-foreground">
           You must be a signed-in admin to access this page.
         </p>
-        <a
-          href="/api/auth/signin"
-          className="mt-4 inline-block rounded-lg bg-primary px-6 py-2.5 text-sm font-semibold text-primary-foreground"
-        >
-          Sign In
-        </a>
+        <Link href="/api/auth/signin">Sign In</Link>
       </div>
     );
   }

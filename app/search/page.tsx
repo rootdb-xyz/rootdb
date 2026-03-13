@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { Smartphone, Filter, Cpu } from "lucide-react";
+import { Smartphone, Cpu } from "lucide-react";
 import { getAllDevices, getBrands, getTags } from "@/lib/data";
 import { calculateRootScore } from "@/lib/utils";
 import { ScoreBadge } from "@/components/score-badge";
@@ -22,9 +22,11 @@ interface Props {
 
 export default async function SearchPage({ searchParams }: Props) {
   const params = await searchParams;
-  const allDevices = getAllDevices();
-  const brands = getBrands();
-  const tags = getTags();
+
+  // 2. Add 'await' to all these calls because they return Promises
+  const allDevices = await getAllDevices();
+  const brands = await getBrands();
+  const tags = await getTags();
 
   // Collect unique values for filters
   const uniqueBrands = [...new Set(allDevices.map((d) => d.brand_id))].sort();
