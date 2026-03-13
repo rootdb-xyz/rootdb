@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 @theme {
-  /* --- Catppuccin Mocha Palette (Primary Dark) --- */
+  /* --- Catppuccin Mocha Palette --- */
   --color-ctp-rosewater: #f5e0dc;
   --color-ctp-flamingo: #f2cdcd;
   --color-ctp-pink: #f5c2e7;
@@ -39,22 +39,19 @@
   --color-muted: var(--color-ctp-subtext0);
 }
 
-/* --- Dark Mode Overrides (Optional) --- */
-/* In v4, you can wrap overrides in @variant dark if you use .dark class on html */
+/* --- Base Styles --- */
 @layer base {
-  :root {
-    background-color: var(--color-ctp-base);
-    color: var(--color-ctp-text);
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
   }
 }
 
-/* --- Utilities --- */
-@layer utilities {
-  @utility scrollbar-hide {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-    &::-webkit-scrollbar {
-      display: none;
-    }
+/* --- Top-level Utilities (Do NOT wrap in @layer) --- */
+@utility scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
   }
 }
