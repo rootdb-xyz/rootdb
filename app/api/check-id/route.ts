@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
 
   switch (type) {
     case "block": {
-      const block = getBlock(id);
+      const block = await getBlock(id);
       return NextResponse.json({
         exists: !!block,
         data: block ? { id: block.id, title: block.title, content: block.content?.slice(0, 200), warning: block.warning, tip: block.tip } : null,
