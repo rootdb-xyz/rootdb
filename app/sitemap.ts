@@ -3,7 +3,8 @@ import { getAllDevices, getAllGuides } from "@/lib/data";
 import { getAllDownloadEntries } from "@/lib/downloads";
 import { siteConfig } from "@/lib/config";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+// 1. Add 'async' here
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
   const base = siteConfig.url;
 
@@ -17,21 +18,27 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/editor`, lastModified: now, changeFrequency: "monthly", priority: 0.6 },
   ];
 
-  const devices = getAllDevices().map((d) => ({
+  // 2. Await the data first, then map it
+  const allDevices = await getAllDevices();
+  const devices = allDevices.map((d) => ({
     url: `${base}/device/${d.brand_id}/${d.series_id}/${d.codename}`,
     lastModified: now,
     changeFrequency: "weekly" as const,
     priority: 0.8,
   }));
 
-  const guides = getAllGuides().map((g) => ({
+  // 3. Await guides too
+  const allGuides = await getAllGuides();
+  const guides = allGuides.map((g) => ({
     url: `${base}/guide/${g.id}`,
     lastModified: g.updated ? new Date(g.updated) : now,
     changeFrequency: "weekly" as const,
     priority: 0.8,
   }));
 
-  const downloads = getAllDownloadEntries().map((d) => ({
+  // 4. Await downloads too
+  const allDownloads = await getAllDownloadEntries();
+  const downloads = allDownloads.map((d) => ({
     url: `${base}/download/${d.id}`,
     lastModified: now,
     changeFrequency: "monthly" as const,
