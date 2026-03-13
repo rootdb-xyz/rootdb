@@ -7,7 +7,6 @@ export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
 export default async function Image() {
-  // 1. AWAIT the stats because getStats is now async
   const stats = await getStats();
 
   return new ImageResponse(
@@ -16,69 +15,62 @@ export default async function Image() {
         style={{
           height: "100%",
           width: "100%",
-          display: "flex",
+          display: "flex", // Explicitly flex
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
           backgroundColor: "#1e1e2e",
           color: "#cdd6f4",
-          fontFamily: "system-ui, sans-serif",
+          fontFamily: "sans-serif",
         }}
       >
         <div
           style={{
-            display: "flex",
+            display: "flex", // Explicitly flex (has 2 children: Root + span)
             alignItems: "center",
-            gap: "16px",
             marginBottom: "24px",
           }}
         >
           <div
             style={{
+              display: "flex", // Added display flex here
               fontSize: "72px",
               fontWeight: 800,
               letterSpacing: "-2px",
             }}
           >
             Root
-            <span style={{ color: "#cba6f7" }}>DB</span>
+            <span style={{ color: "#cba6f7", marginLeft: "4px" }}>DB</span>
           </div>
         </div>
 
-        <div
-          style={{
-            fontSize: "32px",
-            color: "#a6adc8",
-            marginBottom: "48px",
-          }}
-        >
+        <div style={{ display: "flex", fontSize: "32px", color: "#a6adc8", marginBottom: "48px" }}>
           Can you root it?
         </div>
 
         <div
           style={{
-            display: "flex",
+            display: "flex", // Explicitly flex (has 3 children)
             gap: "48px",
           }}
         >
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-            {/* 2. Now we can safely access totalDevices */}
-            <div style={{ fontSize: "48px", fontWeight: 700, color: "#a6e3a1" }}>
+            <div style={{ display: "flex", fontSize: "48px", fontWeight: 700, color: "#a6e3a1" }}>
               {stats.totalDevices}
             </div>
-            <div style={{ fontSize: "18px", color: "#a6adc8" }}>Devices</div>
+            <div style={{ display: "flex", fontSize: "18px", color: "#a6adc8" }}>Devices</div>
           </div>
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-            <div style={{ fontSize: "48px", fontWeight: 700, color: "#89b4fa" }}>
+            <div style={{ display: "flex", fontSize: "48px", fontWeight: 700, color: "#89b4fa" }}>
               {stats.totalVariants}
             </div>
-            <div style={{ fontSize: "18px", color: "#a6adc8" }}>Variants</div>
+            <div style={{ display: "flex", fontSize: "18px", color: "#a6adc8" }}>Variants</div>
           </div>
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-            <div style={{ fontSize: "48px", fontWeight: 700, color: "#cba6f7" }}>
+            <div style={{ display: "flex", fontSize: "48px", fontWeight: 700, color: "#cba6f7" }}>
               {stats.totalGuides}
             </div>
-            <div style={{ fontSize: "18px", color: "#a6adc8" }}>Guides</div>
+            <div style={{ display: "flex", fontSize: "18px", color: "#a6adc8" }}>Guides</div>
           </div>
         </div>
       </div>
