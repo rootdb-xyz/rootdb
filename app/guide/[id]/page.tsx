@@ -19,12 +19,14 @@ interface Props {
 }
 
 export async function generateStaticParams() {
-  return getAllGuides().map((g) => ({ id: g.id }));
+  const guides = await getAllGuides(); // Add await
+  return guides.map((g) => ({ id: g.id }));
 }
+
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
-  const guide = getGuide(id);
+  const guide = await getGuide(id); // Added await
   if (!guide) return { title: "Guide Not Found" };
   return {
     title: guide.title,
@@ -44,16 +46,16 @@ function collectAllBlockIds(guide: Guide): string[] {
 export default async function GuidePage({ params, searchParams }: Props) {
   const { id } = await params;
   const { model, codename } = await searchParams;
-  const guide = getGuide(id);
+  const guide = await getGuide(id); // Added await
   if (!guide) notFound();
 
-  const questions = getQuestions();
-  const answers = getAnswers();
+  const questions = await getQuestions(); // Added await
+  const answers = await getAnswers();     // Added await
 
   const blockIds = collectAllBlockIds(guide);
   const blocks: Record<string, Block> = {};
   for (const bid of blockIds) {
-    const b = getBlock(bid);
+    const b = await getBlock(bid); // Added await
     if (b) blocks[bid] = b;
   }
 
