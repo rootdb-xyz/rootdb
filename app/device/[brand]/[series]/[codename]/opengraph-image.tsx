@@ -17,9 +17,9 @@ export default async function Image({
   const resolvedParams = await params;
   const { brand, series, codename } = resolvedParams;
 
-  const device = getDevice(brand, series, codename);
-  const brands = getBrands();
-  const tags = getTags();
+  const device = await getDevice(brand, series, codename);
+  const brands = await getBrands();
+  const tags = await getTags();
 
   const brandName = brands[brand]?.name ?? brand;
   const deviceName = device?.name ?? codename;
