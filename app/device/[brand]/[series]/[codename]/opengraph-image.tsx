@@ -2,7 +2,8 @@ import { ImageResponse } from "next/og";
 import { getDevice, getBrands, getTags } from "@/lib/data";
 import { calculateRootScore } from "@/lib/utils";
 
-export const runtime = "edge";
+export const runtime = "nodejs"; 
+
 export const alt = "Device Root Status";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
@@ -12,7 +13,10 @@ export default async function Image({
 }: {
   params: Promise<{ brand: string; series: string; codename: string }>;
 }) {
-  const { brand, series, codename } = await params;
+  // Await params first (Next.js 15 requirement)
+  const resolvedParams = await params;
+  const { brand, series, codename } = resolvedParams;
+
   const device = getDevice(brand, series, codename);
   const brands = getBrands();
   const tags = getTags();
@@ -20,8 +24,11 @@ export default async function Image({
   const brandName = brands[brand]?.name ?? brand;
   const deviceName = device?.name ?? codename;
   const variantCount = device?.variants?.length ?? 0;
+  
+  // Safe navigation for variants in case device is undefined
   const rootable = device?.variants?.filter((v) => !v.tags.includes("locked_bootloader")).length ?? 0;
-  const bestScore = device?.variants
+  
+  const bestScore = device?.variants && device.variants.length > 0
     ? Math.max(...device.variants.map((v) => calculateRootScore(v, tags)))
     : 0;
 

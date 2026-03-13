@@ -7,7 +7,8 @@ export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
 export default async function Image() {
-  const stats = getStats();
+  // 1. AWAIT the stats because getStats is now async
+  const stats = await getStats();
 
   return new ImageResponse(
     (
@@ -61,6 +62,7 @@ export default async function Image() {
           }}
         >
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+            {/* 2. Now we can safely access totalDevices */}
             <div style={{ fontSize: "48px", fontWeight: 700, color: "#a6e3a1" }}>
               {stats.totalDevices}
             </div>
