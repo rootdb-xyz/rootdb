@@ -3,6 +3,15 @@ import path from "path";
 
 const LOCAL_STORE_DIR = path.join(process.cwd(), "data", ".local-store");
 
+function isWritable(): boolean {
+  try {
+    fs.mkdirSync(LOCAL_STORE_DIR, { recursive: true });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 export async function storeGet<T>(key: string): Promise<T | null> {
   try {
     const file = path.join(LOCAL_STORE_DIR, `${key.replace(/[:/]/g, "__")}.json`);
@@ -14,7 +23,7 @@ export async function storeGet<T>(key: string): Promise<T | null> {
 }
 
 export async function storeSet<T>(key: string, value: T): Promise<void> {
-  fs.mkdirSync(LOCAL_STORE_DIR, { recursive: true });
+  if (!isWritable()) return;
   const file = path.join(LOCAL_STORE_DIR, `${key.replace(/[:/]/g, "__")}.json`);
   fs.writeFileSync(file, JSON.stringify(value, null, 2));
 }
@@ -22,7 +31,7 @@ export async function storeSet<T>(key: string, value: T): Promise<void> {
 export async function storeDel(key: string): Promise<void> {
   try {
     fs.unlinkSync(path.join(LOCAL_STORE_DIR, `${key.replace(/[:/]/g, "__")}.json`));
-  } catch {}
+  } catch { /* doesn't exist or read-only */ }
 }
 
 export async function storeKeys(pattern: string): Promise<string[]> {
@@ -38,6 +47,7 @@ export async function storeKeys(pattern: string): Promise<string[]> {
 }
 
 export async function storeAppend<T>(key: string, item: T): Promise<void> {
+  if (!isWritable()) return;
   const list = (await storeGet<T[]>(key)) ?? [];
   list.push(item);
   await storeSet(key, list);
