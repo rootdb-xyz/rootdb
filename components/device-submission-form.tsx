@@ -16,6 +16,8 @@ interface VariantInput {
   notes: string;
 }
 
+const [prUrl, setPrUrl] = useState("");
+
 const EMPTY_VARIANT: VariantInput = {
   model: "", soc: "", region: "global", carrier: "", bootloader: "unknown", notes: "",
 };
@@ -110,7 +112,7 @@ export function DeviceSubmissionForm() {
         setError(json.error || `Server returned ${res.status}`);
       } else if (json.ok) {
         setSubmitted(true);
-        setSubmissionId(json.id ?? "");
+        if (json.pr_url) setPrUrl(json.pr_url);
       } else {
         setError("Unexpected response from server");
       }
@@ -125,24 +127,31 @@ export function DeviceSubmissionForm() {
       <div className="rounded-xl border border-ctp-green/20 bg-ctp-green/5 p-8 text-center">
         <CheckCircle2 className="mx-auto h-12 w-12 text-ctp-green mb-3" />
         <h2 className="text-xl font-bold text-ctp-green">Device Submitted!</h2>
-        <p className="mt-2 text-muted-foreground">
-          A moderator will review and merge it into the database.
-        </p>
-        {submissionId && (
-          <p className="mt-2 text-xs font-mono text-muted-foreground">
-            Submission ID: {submissionId}
+        {prUrl ? (
+          <div className="mt-3">
+            <p className="text-muted-foreground">A pull request has been created:</p>
+            <a
+              href={prUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-2 inline-flex items-center gap-1.5 text-primary hover:underline"
+            >
+              View PR on GitHub →
+            </a>
+          </div>
+        ) : (
+          <p className="mt-2 text-muted-foreground">
+            A moderator will review and merge it into the database.
           </p>
         )}
-        <p className="mt-3 text-xs text-muted-foreground">
-          Saved to <code className="bg-secondary px-1 rounded">data/submissions/devices/</code>
-        </p>
         <button
           onClick={() => {
             setSubmitted(false);
+            setPrUrl("");
             setBrand(""); setName(""); setCodename(""); setDefaultSoc("");
             setRam(""); setLaunchOs("");
             setVariants([{ ...EMPTY_VARIANT }]);
-            setError(""); setSubmissionId("");
+            setError("");
           }}
           className="mt-4 text-sm text-primary hover:underline"
         >

@@ -1,21 +1,25 @@
 import { NextRequest, NextResponse } from "next/server";
-import fs from "fs";
-import path from "path";
-
-const SUBMISSIONS_DIR = path.join(process.cwd(), "data", "submissions", "devices");
+import { storeAppend, storeGetList } from "@/lib/store";
+import { createDataPR, isGitHubAppConfigured } from "@/lib/github-pr";
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
 
     if (!body.brand || !body.yaml_content) {
-      return NextResponse.json({ error: "brand and yaml_content are required" }, { status: 400 });
+      return NextResponse.json(
+        { error: "brand and yaml_content required" },
+        { status: 400 }
+      );
     }
 
     const id = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
-    const codename = body.codename || body.display_name?.toLowerCase().replace(/\s+/g, "-") || "unknown";
+    const codename =
+      body.codename ||
+      body.display_name?.toLowerCase().replace(/\s+/g, "-") ||
+      "unknown";
 
-    const submission = {
+    const submission: Record<string, unknown> = {
       id,
       type: "device",
       status: "pending",
@@ -24,17 +28,46 @@ export async function POST(req: NextRequest) {
       display_name: body.display_name ?? codename,
       variant_count: body.variant_count ?? 0,
       yaml_content: body.yaml_content,
+      pr_url: null,
     };
 
-    fs.mkdirSync(SUBMISSIONS_DIR, { recursive: true });
-    const filePath = path.join(SUBMISSIONS_DIR, `${id}.json`);
-    fs.writeFileSync(filePath, JSON.stringify(submission, null, 2));
+    if (isGitHubAppConfigured()) {
+      try {
+        const branch = `device/${body.brand}-${codename}-${id}`;
+        const result = await createDataPR({
+          title: `Add device: ${body.display_name ?? codename}`,
+          body: [
+            `## New Device Submission`,
+            ``,
+            `- **Brand:** ${body.brand}`,
+            `- **Name:** ${body.display_name ?? codename}`,
+            `- **Variants:** ${body.variant_count ?? 0}`,
+            `- **Submitted via:** rootdb.xyz web form`,
+          ].join("\n"),
+          branch,
+          files: [
+            {
+              path: `data/devices/${body.brand}/${codename}.yml`,
+              content: body.yaml_content,
+            },
+          ],
+        });
 
-    console.log(`[RootDB] Device submission saved: ${filePath}`);
+        submission.pr_url = result.pr_url;
+        submission.status = "pr_created";
+      } catch (err) {
+        console.error("[RootDB] GitHub PR failed:", err);
+      }
+    }
 
-    return NextResponse.json({ ok: true, id, path: filePath });
+    await storeAppend("submissions:devices", submission);
+
+    return NextResponse.json({
+      ok: true,
+      id,
+      pr_url: submission.pr_url,
+    });
   } catch (err) {
-    console.error("[RootDB] Device submission error:", err);
     return NextResponse.json(
       { error: err instanceof Error ? err.message : "Server error" },
       { status: 500 }
@@ -42,20 +75,7 @@ export async function POST(req: NextRequest) {
   }
 }
 
-// GET — list pending device submissions
 export async function GET() {
-  try {
-    fs.mkdirSync(SUBMISSIONS_DIR, { recursive: true });
-    const files = fs.readdirSync(SUBMISSIONS_DIR).filter((f) => f.endsWith(".json"));
-    const submissions = files.map((f) => {
-      try {
-        return JSON.parse(fs.readFileSync(path.join(SUBMISSIONS_DIR, f), "utf-8"));
-      } catch {
-        return null;
-      }
-    }).filter(Boolean);
-    return NextResponse.json({ submissions });
-  } catch {
-    return NextResponse.json({ submissions: [] });
-  }
+  const submissions = await storeGetList("submissions:devices");
+  return NextResponse.json({ submissions });
 }
