@@ -1,11 +1,9 @@
-const isDev = process.env.NODE_ENV === "development";
-
 export const siteConfig = {
   name: "RootDB",
-  url: isDev ? "http://localhost:3000" : "https://rootdb.xyz",
+  url: process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
   github: {
     org: "rootdb-xyz",
-    dataRepo: "rootdb-data",
+    dataRepo: "data",
     siteRepo: "rootdb",
     get dataRepoUrl() {
       return `https://github.com/${this.org}/${this.dataRepo}`;
