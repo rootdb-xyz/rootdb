@@ -16,8 +16,6 @@ interface VariantInput {
   notes: string;
 }
 
-const [prUrl, setPrUrl] = useState("");
-
 const EMPTY_VARIANT: VariantInput = {
   model: "", soc: "", region: "global", carrier: "", bootloader: "unknown", notes: "",
 };
@@ -46,7 +44,7 @@ export function DeviceSubmissionForm() {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
-  const [submissionId, setSubmissionId] = useState("");
+  const [prUrl, setPrUrl] = useState("");
 
   function addVariant() {
     setVariants((prev) => [...prev, { ...EMPTY_VARIANT, soc: defaultSoc }]);
